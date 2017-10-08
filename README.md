@@ -3,24 +3,24 @@ PsxScrapper is a repository for scripts that read data from Pakistan Stocks Exch
 
 ###### Getting started with the code:
 
-** Initializing an array of headers for the data to be extracted **
+**Initializing an array of headers for the data to be extracted**
 ```
 text1 = ['SCRIP', 'LDCP', 'Open', 'High', 'Low', 'Curr.', 'Vol.', 'Chng']
 ```
 
-** Reading the metadata from psx's(Pakistan Stocks Exchange) mirror site **
+**Reading the metadata from psx's(Pakistan Stocks Exchange) mirror site**
 ```
 url = 'http://hamariweb.com/finance/stockexchanges/psx_market_summary.aspx'
 source_code = requests.get(url)
 plain_text = source_code.text
 ```
 
-** Using BeautifulSoup lib and an html.parser for skimming across the extracted data **
+**Using BeautifulSoup lib and an html.parser for skimming across the extracted data**
 ```
 soup = BeautifulSoup(plain_text, "html.parser")
 ```
 
-** Setting name of the excel document in which filtered data will be written to current data and time - Script execution data and time **
+**Setting name of the excel document in which filtered data will be written to current data and time - Script execution data and time**
 ```
 temp = str(datetime.datetime.now())
 for a in temp:
@@ -28,19 +28,19 @@ for a in temp:
         filename.append(a)
 ```
 
-** Initializing and adding an excel document in the workbook **
+**Initializing and adding an excel document in the workbook**
 ```
 workbook = xlsxwriter.Workbook(''.join(filename)+'.xlsx')
 worksheet = workbook.add_worksheet()
 ```
 
-** Setting the widths of different cells - Presentation purpose **
+**Setting the widths of different cells - Presentation purpose**
 ```
 worksheet.set_column(0, 0, 25)
 worksheet.set_column(6, 6, 10)
 ```
 
-** Formatting and appending names of the headers in the excel document as initialized above **
+**Formatting and appending names of the headers in the excel document as initialized above**
 ```
 for j in range(0,8,1):
         if m < len(text1):
@@ -50,7 +50,7 @@ for j in range(0,8,1):
             m += 1
 ```
 
-** Formatting and appending current data and time in the excel document - DateTimeStamp **
+**Formatting and appending current data and time in the excel document - DateTimeStamp**
 ```
 format = workbook.add_format({'bold': True})
 worksheet.set_row(0, 18, format)
@@ -60,7 +60,7 @@ worksheet.write(0,1, str(datetime.datetime.now()))
 
 ###### Implementation for extracting data against [SCRIP, LDCP, Open, High, Low, Current, Volume] which is encapsulated by a span element per the respective header
 
-** Filtering, extracting, formatting and appending marketData_advance class data encapsulated by span element **
+**Filtering, extracting, formatting and appending marketData_advance class data encapsulated by span element**
 ```
 m = 0
 for link in soup.findAll('span', {'class': 'marketData_advance'}):
@@ -77,7 +77,7 @@ cmp1.clear()
 m = 0
 ```
 
-** Filtering, extracting, formatting and appending marketData_decline class data encapsulated by span element **
+**Filtering, extracting, formatting and appending marketData_decline class data encapsulated by span element**
 ```
 for link in soup.findAll('span',{'class': 'marketData_decline'}):
     metadata = link.text
@@ -95,7 +95,7 @@ cmp1.clear()
 m = 0
 ```
 
-** Filtering, extracting, formatting and appending marketData_noChange class data encapsulated by span element **
+**Filtering, extracting, formatting and appending marketData_noChange class data encapsulated by span element**
 ```
 for link in soup.findAll('span',{'class': 'marketData_noChange'}):
     metadata = link.text
@@ -115,7 +115,7 @@ m = 0
 
 ###### Implementation for extracting data against [Change] which is encapsulated by div element'''
 
-** Filtering, extracting, formatting and appending marketData_advance class data encapsulated by div or section element **
+**Filtering, extracting, formatting and appending marketData_advance class data encapsulated by div or section element**
 ```
 for link in soup.findAll('div',{'class': 'marketData_advance'}):
     metadata = link.text
@@ -131,7 +131,7 @@ cmp1.clear()
 m = 0
 ```
 
-** Filtering, extracting, formatting and appending marketData_decline class data encapsulated by div or section element **
+**Filtering, extracting, formatting and appending marketData_decline class data encapsulated by div or section element**
 ```
 for link in soup.findAll('div',{'class': 'marketData_decline'}):
     metadata = link.text
@@ -147,7 +147,7 @@ cmp1.clear()
 m = 0
 ```
 
-** Filtering, extracting, formatting and appending marketData_noChange class data encapsulated by div or section element **
+**Filtering, extracting, formatting and appending marketData_noChange class data encapsulated by div or section element**
 ```
 for link in soup.findAll('div',{'class': 'marketData_noChange'}):
     metadata = link.text
@@ -160,7 +160,7 @@ for i in range(index1,index1+x,1):
         m += 1
 m = 0
 ```
-** Closing the workbook allocated for the excel document **
+**Closing the workbook allocated for the excel document**
 ```
 workbook.close()
 ```
